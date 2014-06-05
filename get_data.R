@@ -25,6 +25,8 @@ if(
   files <- unzip( tf , exdir = getwd() )
 }
 
+##### READ IN DATA FILES
+
 # SHOULD PROBABLY JUST CREATE A FUNCTION ACCEPTING STRINGS ("test" and "train")
 # Create train path string.
 tpath=paste(localdir,datadir,"train",sep='/')
@@ -44,9 +46,17 @@ xtest=read.table(file=paste(tpath,'/',xname,sep=''),header=FALSE)
 ytest=read.table(file=paste(tpath,'/',yname,sep=''),header=FALSE)
 subtest=read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
 
+##### READ IN ACTIVITY LABELS, FEATURES (x col names)
+actLabel=read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'))
+xLabel=read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
+
 # Bind all column vectors together. Subject ID first.
-fulltrain=cbind(subtrain,xtrain,ytrain)
-fulltest=cbind(subtest,xtest,ytest)
+# COLS: SubjID, ActID (Y), GyroVectors(X)
+fulltrain=cbind(subtrain,ytrain,xtrain)
+fulltest=cbind(subtest,ytest,xtest)
 
 # Concatenate training and test frames.
 complete=rbind(fulltrain,fulltest)
+# Name columngs
+colnames(complete)=c("sid","activity",xLabel[,2])
+
