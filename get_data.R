@@ -52,20 +52,20 @@ subtest=read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
 
 
 ##### READ IN ACTIVITY LABELS, FEATURES (x col names)
-actLabel=read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'),stringsAsFactors=FALSE)
-xLabel=read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
+actLabel = read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'),stringsAsFactors=FALSE)
+xLabel = read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
 
 # Bind all column vectors together. Subject ID first.
 # COLS: SubjID, ActID (Y), GyroVectors(X)
-fulltrain=cbind(subtrain,ytrain,xtrain)
-fulltest=cbind(subtest,ytest,xtest)
+fulltrain = cbind(subtrain,ytrain,xtrain)
+fulltest = cbind(subtest,ytest,xtest)
 
 # Concatenate training and test frames.
 complete=rbind(fulltrain,fulltest)
 # Name columns
-colnames(complete)=c("sid","activity",xLabel[,2])
+colnames(complete) = c("sid","activity",xLabel[,2])
 #Rename actLabel column.
-colnames(actLabel)[1]=c("activity")
+colnames(actLabel)[1] = c("activity")
 
 # Use PLYR to replace categorical integers with string.
 # Little odd: join similar to merge or SQL join.
@@ -75,6 +75,9 @@ colnames(actLabel)[1]=c("activity")
 #(Eg vars ID, Activity(Int), Activity(String))
 # assigning this to the $activity variable replaces it. 
 
-complete$activity=join(x=complete[,1:2],y=actLabel,by="activity")[,3]
+complete$activity = join(x=complete[,1:2],y=actLabel,by="activity")[,3]
 
-
+# DDPLY first argument df, 2nd grouping (this case none), 3rd function argument.
+# so for df, find column wise sd for columns 3-563 (all but sid,activity)
+sdextract = ddply(complete[,3:563],.(),colwise(sd))
+mnextract = colMeans(x=complete[,3:563])
