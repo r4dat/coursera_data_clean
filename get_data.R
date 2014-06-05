@@ -1,3 +1,6 @@
+# 
+require(plyr)
+
 # Set string Variables
 localdir=getwd()
 datadir="UCI HAR Dataset"
@@ -46,8 +49,10 @@ xtest=read.table(file=paste(tpath,'/',xname,sep=''),header=FALSE)
 ytest=read.table(file=paste(tpath,'/',yname,sep=''),header=FALSE)
 subtest=read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
 
+
+
 ##### READ IN ACTIVITY LABELS, FEATURES (x col names)
-actLabel=read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'))
+actLabel=read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'),stringsAsFactors=FALSE)
 xLabel=read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
 
 # Bind all column vectors together. Subject ID first.
@@ -57,6 +62,15 @@ fulltest=cbind(subtest,ytest,xtest)
 
 # Concatenate training and test frames.
 complete=rbind(fulltrain,fulltest)
-# Name columngs
+# Name columns
 colnames(complete)=c("sid","activity",xLabel[,2])
+#Rename actLabel column.
+colnames(actLabel)[1]=c("activity")
 
+# Use PLYR to replace categorical integers with string.
+# Little odd: join similar to merge or SQL join.
+# Why complete[,1:2]? Because join only accepts dataframes.
+# Complete[,2] is just a vector. The [,3] at the end selects just the 
+# text string from the resultant joined dataframe.
+# assigning this to the $activity variable replaces it. 
+complete$activity=join(x=complete[,1:2],y=actLabel,by="activity")[,3]
