@@ -81,3 +81,5 @@ complete$activity = join(x=complete[,1:2],y=actLabel,by="activity")[,3]
 # so for df, find column wise sd for columns 3-563 (all but sid,activity)
 sdextract = ddply(complete[,3:563],.(),colwise(sd))
 mnextract = colMeans(x=complete[,3:563])
+
+#### MAYBE WANT LITERALLY JUST *mean* and *std* variables?
