@@ -71,6 +71,10 @@ colnames(actLabel)[1]=c("activity")
 # Little odd: join similar to merge or SQL join.
 # Why complete[,1:2]? Because join only accepts dataframes.
 # Complete[,2] is just a vector. The [,3] at the end selects just the 
-# text string from the resultant joined dataframe.
+# text string from the resultant joined dataframe. 
+#(Eg vars ID, Activity(Int), Activity(String))
 # assigning this to the $activity variable replaces it. 
+
 complete$activity=join(x=complete[,1:2],y=actLabel,by="activity")[,3]
+
+
