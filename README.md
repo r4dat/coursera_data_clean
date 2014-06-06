@@ -10,21 +10,25 @@ I used plyr because I prefer its *join* function to the base *merge*. I find it 
 The first section uses the same code as the "get-data" script above to download and extract the file locally.
 
 Next we start reading in the files.
-Previously (as part of the get-data section) I've created to useful strings.
+Previously (as part of the get-data section) I've created two useful strings.
 ```{r}
     localdir=getwd()
     datadir="UCI HAR Dataset"
 ```
 The first setting the current working directory, the second setting the base data directory within the working directory.
 
-Next we start building path strings to make the actual read-in less painful than completely literal path entry.
+Next we start building path strings to make the actual read-in less painful than completely literal path entry. If you are unfamiliar with the paste function, it concatenates strings.
+```{r}
     tpath = paste(localdir,datadir,"train",sep='/')
     xname = "X_train.txt"
     yname = "y_train.txt"
     subtname = "subject_train.txt"
+```
 and read with
+```{r}
     xtrain = read.table(file=paste(tpath,'/',xname,sep=''),header=FALSE)
     subtrain = read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
+```
 This process is repeated with "test" to get the test version of the data.
 
-In the end we've read in 6 dataframes from the corresponding test and train folders called **xtrain**,**ytrain**,**subtrain**,**xtest**,**ytest**,**subtest**.
+In the end we've read in 6 dataframes from the corresponding test and train folders called **xtrain** , **ytrain** , **subtrain** , **xtest** , **ytest** , **subtest**.
