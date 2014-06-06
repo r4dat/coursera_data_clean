@@ -83,7 +83,7 @@ But piece by piece: *join* is part of the 'plyr' package. It functions identical
 This join command creates a new dataframe with: sid,activity(integer),activity(string). So one line might be: '3 1 Walking'. the [,3] at the end of the join selects only this last column and assigns it to complete's activity column thus replacing 1 with Walking and so on. 
 
 But wait, all we want are variables dealing with mean and standard deviation (or 'std' as the data dictionary abbreviates it).
-Previously we've used integer based indexing, but we can also use column names.So how do we know which ones to pick? The *grep* funtion allows us to search for strings and return those containing pre-defined patterns which is done below. E.g. this *grep* searches for "sid","activity" and any strings containing mean or std anywhere in the word without regard to case. You'll note that we're turning *grep* loose the full column names. So grep will return only those column names we search for, effectively recreating the **complete** dataframe with all rows, but only the columns grep found.
+Previously we've used integer based indexing, but we can also use column names.So how do we know which ones to pick? The *grep* funtion allows us to search for strings and return those containing pre-defined patterns which is done below. E.g. this *grep* searches for "sid" or "activity" or any strings containing mean or std anywhere in the word without regard to case. You'll note that we're turning *grep* loose the full column names. So grep will return only those column names we search for, effectively recreating the **complete** dataframe with all rows, but only the columns grep found.
 ```{r}
     complete = complete[,
                     grep(pattern="sid|activity|*mean*|*std*",
