@@ -11,8 +11,10 @@ The first section uses the same code as the "get-data" script above to download 
 
 Next we start reading in the files.
 Previously (as part of the get-data section) I've created to useful strings.
+```{r}
     localdir=getwd()
     datadir="UCI HAR Dataset"
+```
 The first setting the current working directory, the second setting the base data directory within the working directory.
 
 Next we start building path strings to make the actual read-in less painful than completely literal path entry.
