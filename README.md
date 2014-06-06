@@ -101,10 +101,12 @@ The function finds the mean of each data column (3:88) by combination of Subject
 But now we've changed the data without changing the variable names! So that's our next step. Using the same *colnames* trick we used earlier, we're going to change the variable names.
 ```{r}
     # add meanby_sid_act prefix.
-    colnames(tidy)=paste("meanby_sidact_",colnames(tidy),sep='')
+    colnames(tidy)=paste("meanby_subjact_",colnames(tidy),sep='')
 ```
 Which prepends "meanby_sidact" to all the column names... Including sid and activity. Whoops! This is fixed with
 ```{r}
     #Reset sid and activity names.
-    colnames(tidy)[1:2]=c("sid","activity")
+    colnames(tidy)[1:2]=c("subjID","activity")
+    #Then write the table
+    write.table(tidy,file="mean_by_subj_id_tidy_tableout.txt",quote=TRUE,col.names=TRUE,row.names=FALSE)
 ```

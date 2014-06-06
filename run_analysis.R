@@ -92,7 +92,11 @@ complete = complete[,
 tidy = aggregate(x=complete[,3:88],by=complete[,c("sid","activity")],FUN=mean)
 
 # add meanby_sid_act prefix.
-colnames(tidy)=paste("meanby_sidact_",colnames(tidy),sep='')
+colnames(tidy)=paste("meanby_subjact_",colnames(tidy),sep='')
 
-#Reset sid and activity names.
-colnames(tidy)[1:2]=c("sid","activity")
+#Reset sid and activity names. Change sid to subjID
+# -- little more human readable and since we're done working with the data, why not?
+colnames(tidy)[1:2]=c("subjID","activity")
+
+#Write table.
+write.table(tidy,file="mean_by_subj_id_tidy_tableout.txt",quote=TRUE,col.names=TRUE,row.names=FALSE)
