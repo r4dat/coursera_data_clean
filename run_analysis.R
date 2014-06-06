@@ -1,9 +1,8 @@
-# 
 require(plyr)
-
-# Set string Variables
 localdir=getwd()
 datadir="UCI HAR Dataset"
+# Set string Variables
+
 
 # IF file doesn't exist in working directory, 
 # and no x* or subject* dataframe exists, dl and expand data file.
