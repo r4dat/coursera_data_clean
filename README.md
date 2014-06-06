@@ -105,7 +105,7 @@ But now we've changed the data without changing the variable names! So that's ou
 ```
 Which prepends "meanby_subjact" to all the column names... Including sid and activity. Whoops! This is fixed with
 ```{r}
-    #Reset sid and activity names.
+    #Reset sid and activity names. Let's choose something more human-readable than sid too.
     colnames(tidy)[1:2]=c("subjID","activity")
     #Then write the table
     write.table(tidy,file="mean_by_subj_id_tidy_tableout.txt",quote=TRUE,col.names=TRUE,row.names=FALSE)
