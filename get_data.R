@@ -90,4 +90,4 @@ complete = complete[,
 # then find mean.
 
 #Skip first 2 columns of set because they're subject-id and activity.
-tidy = aggregate(x=copmplete[,3:88],by=complete[,c("sid","activity")],FUN=mean)
+tidy = aggregate(x=complete[,3:88],by=complete[,c("sid","activity")],FUN=mean)
