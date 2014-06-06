@@ -91,3 +91,5 @@ complete = complete[,
 
 #Skip first 2 columns of set because they're subject-id and activity.
 tidy = aggregate(x=complete[,3:88],by=complete[,c("sid","activity")],FUN=mean)
+
+##TODO add "mean" tag or prefix to variables?
