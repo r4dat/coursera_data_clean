@@ -86,4 +86,8 @@ complete = complete[,
                      grep(pattern="sid|activity|*mean*|*std*",
                           x=colnames(complete),ignore.case=TRUE)]
 
+# Use aggregate function to group by subject-id and activity type,
+# then find mean.
 
+#Skip first 2 columns of set because they're subject-id and activity.
+tidy = aggregate(x=copmplete[,3:88],by=complete[,c("sid","activity")],FUN=mean)
