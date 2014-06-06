@@ -66,7 +66,7 @@ This is a good start, but if you were to hand the **complete** dataframe to some
 ```{r}
     colnames(complete) = c("sid","activity",xLabel[,2])
 ```
-The *colnames* function returns a vector of column names in a dataframe. Right now it's V1, V2 and so on. We set this equal to a new vector of column names we've created: sid, activity, and so on. 
+The *colnames* function returns a vector of column names from a dataframe. Right now it's V1, V2 and so on. We set this equal to a new vector of column names we've created: sid, activity, and so on. 
 
 But why xLabel[,2]? Because xLabel is a 2 by 561 dataframe where the first column is a number 1,2,3 and so on, and the 2nd column is the measurement name tBodyAcc-mean()-X. xLabel[,2] uses indexing to say "Select all rows, column 2 of the dataframe."
 
