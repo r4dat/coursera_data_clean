@@ -103,7 +103,7 @@ But now we've changed the data without changing the variable names! So that's ou
     # add meanby_sid_act prefix.
     colnames(tidy)=paste("meanby_subjact_",colnames(tidy),sep='')
 ```
-Which prepends "meanby_sidact" to all the column names... Including sid and activity. Whoops! This is fixed with
+Which prepends "meanby_subjact" to all the column names... Including sid and activity. Whoops! This is fixed with
 ```{r}
     #Reset sid and activity names.
     colnames(tidy)[1:2]=c("subjID","activity")
