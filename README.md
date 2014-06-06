@@ -31,4 +31,12 @@ and read with
 ```
 This process is repeated with "test" to get the test version of the data.
 
-In the end we've read in 6 dataframes from the corresponding test and train folders called **xtrain** , **ytrain** , **subtrain** , **xtest** , **ytest** , **subtest**.
+In the end we've read in 6 dataframes from the corresponding test and train folders called 
+- **xtrain**  
+- **ytrain** 
+- **subtrain** 
+- **xtest** 
+- **ytest** 
+- **subtest**
+
+For reference the x sets contain columns of gyroscope data, the y sets contain the activiy integer code (e.g. 1 for walking) per row, and he sub sets contain the person identifier or "Subject ID" on a per-row basis.
