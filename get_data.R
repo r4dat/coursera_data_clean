@@ -77,6 +77,13 @@ colnames(actLabel)[1] = c("activity")
 
 complete$activity = join(x=complete[,1:2],y=actLabel,by="activity")[,3]
 
-complete = complete[,grep(pattern="*mean*|*std*",x=xLabel[,2],ignore.case=TRUE)]
+# The grep function does string pattern matching, so we're searching the 
+# var lables for mean and std (case-insensitive).
+# this drops sid, and activity so we manually specify column names in the search.
+# the reassignment drops other columns.
+
+complete = complete[,
+                     grep(pattern="sid|activity|*mean*|*std*",
+                          x=colnames(complete),ignore.case=TRUE)]
 
 
