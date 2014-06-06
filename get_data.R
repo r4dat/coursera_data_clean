@@ -6,7 +6,7 @@ localdir=getwd()
 datadir="UCI HAR Dataset"
 
 # IF file doesn't exist in working directory, 
-# and no subset dataframe exists, dl and expand data file.
+# and no x* or subject* dataframe exists, dl and expand data file.
 if(
   !(
     file_test(op="-d",x=paste(localdir,'/',datadir,sep='')) ||
@@ -55,7 +55,7 @@ subtest=read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
 actLabel = read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'),stringsAsFactors=FALSE)
 xLabel = read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
 
-# Bind all column vectors together. Subject ID first.
+# Bind all column vectors together.
 # COLS: SubjID, ActID (Y), GyroVectors(X)
 fulltrain = cbind(subtrain,ytrain,xtrain)
 fulltest = cbind(subtest,ytest,xtest)
@@ -77,9 +77,6 @@ colnames(actLabel)[1] = c("activity")
 
 complete$activity = join(x=complete[,1:2],y=actLabel,by="activity")[,3]
 
-# DDPLY first argument df, 2nd grouping (this case none), 3rd function argument.
-# so for df, find column wise sd for columns 3-563 (all but sid,activity)
-sdextract = ddply(complete[,3:563],.(),colwise(sd))
-mnextract = colMeans(x=complete[,3:563])
 
-#### MAYBE WANT LITERALLY JUST *mean* and *std* variables?
+
+
