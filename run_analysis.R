@@ -92,4 +92,8 @@ complete = complete[,
 #Skip first 2 columns of set because they're subject-id and activity.
 tidy = aggregate(x=complete[,3:88],by=complete[,c("sid","activity")],FUN=mean)
 
-##TODO add "mean" tag or prefix to variables?
+# add meanby_sid_act prefix.
+colnames(tidy)=paste("meanby_sidact_",colnames(tidy),sep='')
+
+#Reset sid and activity names.
+colnames(tidy)[1:2]=c("sid","activity")
