@@ -5,6 +5,7 @@ Get_Data.R
 *Read_Data* function: Accept string argument named setstring, expected to be either "test" or "train". Then does some string manipulation to create the paths and load dataframes. After all sets are loaded (x,y,subject) the function rbinds them into a logical structure (subj,act,x) and returns the resultant dataframe.
 
 A more exhaustive overview of the read_data code follows:
+
 Previously I've created two useful strings.
 ```{r}
     localdir=getwd()
@@ -94,6 +95,10 @@ Which prepends "meanby_subjact" to all the column names... Including sid and act
 ```{r}
     #Reset sid and activity names. Let's choose something more human-readable than sid too.
     colnames(tidy)[1:2]=c("subjID","activity")
+```
+
+And finally we write our newly made "tidy" data with:
+```{r}
     #Then write the table
     write.table(tidy,file="mean_by_subj_id_tidy_tableout.txt",quote=TRUE,col.names=TRUE,row.names=FALSE)
 ```
