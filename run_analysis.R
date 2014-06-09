@@ -1,66 +1,27 @@
 require(plyr)
+source("get_data.R")
+# Set string Variables
 localdir=getwd()
 datadir="UCI HAR Dataset"
-# Set string Variables
 
-
-# IF file doesn't exist in working directory, 
-# and no x* or subject* dataframe exists, dl and expand data file.
-if(
-  !(
-    file_test(op="-d",x=paste(localdir,'/',datadir,sep='')) ||
-      (exists("xtest") && exists("subtest"))
-  )
-){
-  # create a temporary file and a temporary directory on your local disk
-  tf <- tempfile()
-  td <- tempdir()
-  
-  # run the download file function, download as binary..  save the result to the temporary file
-  download.file(
-    "https://d396qusza40orc.cloudfront.net/getdata/projectfiles/UCI%20HAR%20Dataset.zip",
-    tf ,
-    mode = 'wb' 
-  )
-  
-  # unzip the files to the temporary directory
-  files <- unzip( tf , exdir = getwd() )
-}
+## Sourced from get_data file.
+## Test if dataframe or data-dir etc exists
+download_data()
 
 ##### READ IN DATA FILES
+## Se GET_DATA.R function.
 
-# SHOULD PROBABLY JUST CREATE A FUNCTION ACCEPTING STRINGS ("test" and "train")
-# Create train path string.
-tpath = paste(localdir,datadir,"train",sep='/')
-xname = "X_train.txt"
-yname = "y_train.txt"
-subtname = "subject_train.txt"
-xtrain = read.table(file=paste(tpath,'/',xname,sep=''),header=FALSE)
-ytrain = read.table(file=paste(tpath,'/',yname,sep=''),header=FALSE)
-subtrain = read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
-
-# Create test path string.
-tpath = paste(localdir,datadir,"test",sep='/')
-xname = "X_test.txt"
-yname = "y_test.txt"
-subtname = "subject_test.txt"
-xtest = read.table(file=paste(tpath,'/',xname,sep=''),header=FALSE)
-ytest = read.table(file=paste(tpath,'/',yname,sep=''),header=FALSE)
-subtest = read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
-
-
+# function expects test or train strings. 
+trn=read_data("test")
+tst=read_data("train")
 
 ##### READ IN ACTIVITY LABELS, FEATURES (x col names)
 actLabel = read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'),stringsAsFactors=FALSE)
 xLabel = read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
 
-# Bind all column vectors together.
-# COLS: SubjID, ActID (Y), GyroVectors(X)
-fulltrain = cbind(subtrain,ytrain,xtrain)
-fulltest = cbind(subtest,ytest,xtest)
-
 # Concatenate training and test frames.
-complete=rbind(fulltrain,fulltest)
+complete=rbind(trn,tst)
+
 # Name columns
 colnames(complete) = c("sid","activity",xLabel[,2])
 #Rename actLabel column.

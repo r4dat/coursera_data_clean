@@ -1,65 +1,52 @@
 Get_Data.R
 ===================
-This is my standard base "get-data" script. It checks for the existence of the downloaded data files or if the named dataframes are already in memory. If neither of these things is true, it downloads the hard-coded url and expands as needed. The script is boilerplate and the code is identical to that in the run_analysis.R script. Kept in-repository because I always start there.
+*Download_Data* function: Set some base strings (datadir, working directory). If neither data files, nor expected dataframes exist in directory or environment respectively, download and unzip files.
 
-Run_Analysis.R
-===================
-Required Packages: Plyr
-I used plyr because I prefer its *join* function to the base *merge*. I find it has a more intuitive syntax in context of the script creates a stable join.
+*Read_Data* function: Accept string argument named setstring, expected to be either "test" or "train". Then does some string manipulation to create the paths and load dataframes. After all sets are loaded (x,y,subject) the function rbinds them into a logical structure (subj,act,x) and returns the resultant dataframe.
 
-The first section uses the same code as the "get-data" script above to download and extract the file locally.
-
-Next we start reading in the files.
-Previously (as part of the get-data section) I've created two useful strings.
+A more exhaustive overview of the read_data code follows:
+Previously I've created two useful strings.
 ```{r}
     localdir=getwd()
     datadir="UCI HAR Dataset"
 ```
 The first setting the current working directory, the second setting the base data directory within the working directory.
 
-Next we start building path strings to make the actual read-in less painful than completely literal path entry. If you are unfamiliar with the paste function, it concatenates strings.
+Next we start building path strings to make the actual read-in less painful than co
+mpletely literal path entry. If you are unfamiliar with the paste function, it concatenates strings.
 ```{r}
-    tpath = paste(localdir,datadir,"train",sep='/')
-    xname = "X_train.txt"
-    yname = "y_train.txt"
-    subtname = "subject_train.txt"
+    tpath =  paste(localdir,datadir,setstring,sep='/')
+    xname =  paste("X_",setstring,suffix,sep='')
+    yname =  paste("y_",setstring,suffix,sep='')
+    subtname = paste("subject_",setstring,suffix,sep='')
 ```
 and read with
 ```{r}
-    xtrain = read.table(file=paste(tpath,'/',xname,sep=''),header=FALSE)
-    subtrain = read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
+    xset = read.table(file=paste(tpath,'/',xname,sep=''),header=FALSE)
+    subtset = read.table(file=paste(tpath,'/',subtname,sep=''),header=FALSE)
 ```
-This process is repeated with "test" to get the test version of the data.
+The individual elements xset, yset, and subject set are then combined into a coherent dataframe in the order SubjectID(subtset), ActivityID(yset), and gps readings (xset).
 
-We also need to read in two additional "helper" files. One allows us to look up activity labels. E.g. does the integer 1 mean Walking or Running? The second file contains a description of what each column in the x-sets mean. Because right now we just have numbers, and if you were to look at the dataframe they'd be labled V1, V2 etc.
+Run_Analysis.R
+===================
+Required Packages: Plyr
+I used plyr because I prefer its *join* function to the base *merge*. I find it has a more intuitive syntax in context of the script creates a stable join.
+
+The first section sources the get_data script to download data if it doesn't already exist.
+
+Next we get our fully constructed dataframes with the *read_data* function. Their composition is outlined in the section on *get_data* but as a reminder they are of the form subjectID, Activity, GPS_Measures.
+
+```{r}
+    trn=read_data("test")
+    tst=read_data("train")
+```
+
+Additionally we read in two additional "helper" files. One allows us to look up activity labels. E.g. does the integer 1 mean Walking or Running? The second file contains a description of what each column in the x-sets mean. Because right now we just have numbers, and if you were to look at the dataframe they'd be labled V1, V2 etc.
 
 ```{r}
 ##### READ IN ACTIVITY LABELS, FEATURES (x col names)
     actLabel = read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'),stringsAsFactors=FALSE)
     xLabel = read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
-```
-
-
-In the end we've read in 6 dataframes from the corresponding test and train folders called 
-- **xtrain**   a dataframe containing 7352 observations (rows) with 561 gyroscope measures (columns.) 
-- **ytrain**  a dataframe containing 1 column of activity codes (1-6) corresponding to each row of the **xtrain** dataframe.
-- **subtrain** a dataframe containing 1 column of subject identifiers (1-30) for each observation in **xtrain**.
-- **xtest**  similarly to xtrain though with 2947 observations (rows).
-- **ytest**  similar to above.
-- **subtest** similar to above.
-- **actLabel** links integer codes 1-6 to activity strings Walking, Running etc.
-- **xLabel** lists what all the columns in the x-sets actually are.
-
-Our next goal is to combine each set (train and test) into sensibly organized dataframes. The most sensible to me was by Subject ID, Activity Code, and Measurements. We do this using the *cbind* command or "column bind" a function which 'glues' vectors/columns together.
-
-```{r}
-    fulltrain = cbind(subtrain,ytrain,xtrain)
-    fulltest = cbind(subtest,ytest,xtest)
-```
-Then we combine the training and test sets into one dataframe by concatenating the two dataframes with *rbind* or rowbind.
-
-```{r}
-    complete=rbind(fulltrain,fulltest)
 ```
 
 This is a good start, but if you were to hand the **complete** dataframe to someone, they'd have no idea what it means because none of the columns are labeled as anything other than V1, V2! The next bit does this.
