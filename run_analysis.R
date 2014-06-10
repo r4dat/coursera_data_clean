@@ -62,7 +62,7 @@ countframe = join(x=tidy[,1:2],y=countframe,by=c("sid","activity"))
 ## Bind new column into frame.
 tidy=cbind(tidy[,1:2],freq=countframe[,3],tidy[,3:88])
 
-#join on sid and activity
+
 # add meanby_sid_act prefix.
 colnames(tidy)=paste("meanby_subjact_",colnames(tidy),sep='')
 
