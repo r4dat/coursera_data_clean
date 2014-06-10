@@ -64,11 +64,14 @@ tidy=cbind(tidy[,1:2],freq=countframe[,3],tidy[,3:88])
 
 
 # add meanby_sid_act prefix.
-colnames(tidy)=paste("meanby_subjact_",colnames(tidy),sep='')
+colnames(tidy)=paste("mean_",colnames(tidy),sep='')
 
 #Reset sid and activity names. Change sid to subjID
 # -- little more human readable and since we're done working with the data, why not?
 colnames(tidy)[1:3]=c("subjID","activity","freq")
+
+# Melt dataframe into true row-oriented fashion.
+tidy = melt(data=tidy,id.vars=colnames(tidy[,1:3]),measure.vars=colnames(tidy[,4:ncol(tidy)]))
 
 #Write table.
 write.table(tidy,file="mean_by_subj_id_tidy_tableout.txt",quote=TRUE,col.names=TRUE,row.names=FALSE)
