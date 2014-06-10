@@ -91,6 +91,25 @@ What we've been tasked to find is the mean of our variables broken out by subjec
 ```
 The function finds the mean of each data column (3:88) by combination of Subject-ID (sid) and activity.
 
+Additionally, for future analysis it may be useful to know the subset sample sizes, like Subject 1 had 52 observations for Standing, 62 for walking and so on. To find this we'll create a frequency variable and bind it into the **tidy** frame.
+
+The first statement splits based on sid,activity combinations and counts the number of rows. The returned **countframe** is sid,activity,nrow.
+
+```{r}
+      ## create column containing frequency count of SubjID & Act to help with further 
+    ## analysis. 
+    countframe = ddply(complete[,1:2],.(sid,activity),nrow)
+```
+
+Following we match based on sid and activity, sense ordering of the frames isn't assured, and finally add the new column to **tidy** with *cbind*.
+```{r}
+    ## Match count on sid and activity in tidy frame.
+    countframe = join(x=tidy[,1:2],y=countframe,by=c("sid","activity"))
+
+    ## Bind new column into frame.
+    tidy=cbind(tidy[,1:2],freq=countframe[,3],tidy[,3:88])
+```
+
 But now we've changed the data without changing the variable names! So that's our next step. Using the same *colnames* trick we used earlier, we're going to change the variable names.
 ```{r}
     # add meanby_sid_act prefix.
