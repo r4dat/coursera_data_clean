@@ -30,7 +30,7 @@ The individual elements xset, yset, and subject set are then combined into a coh
 
 Run_Analysis.R
 ===================
-Required Packages: Plyr
+Required Packages: Plyr, Reshape2
 I used plyr because I prefer its *join* function to the base *merge*. I find it has a more intuitive syntax in context of the script creates a stable join.
 
 The first section sources the get_data script to download data if it doesn't already exist.
@@ -113,12 +113,17 @@ Following we match based on sid and activity, sense ordering of the frames isn't
 But now we've changed the data without changing the variable names! So that's our next step. Using the same *colnames* trick we used earlier, we're going to change the variable names.
 ```{r}
     # add meanby_sid_act prefix.
-    colnames(tidy)=paste("meanby_subjact_",colnames(tidy),sep='')
+    colnames(tidy)=paste("mean_",colnames(tidy),sep='')
 ```
 Which prepends "meanby_subjact" to all the column names... Including sid and activity. Whoops! This is fixed with
 ```{r}
     #Reset sid and activity names. Let's choose something more human-readable than sid too.
     colnames(tidy)[1:2]=c("subjID","activity","freq")
+```
+
+Create a "melted" row-oriented data-set. I've opted to include the subset frequency (variable 'freq') for each row because it may be necc. if various statistical calculations or weighting schemes are used based on the variable.
+```{r}
+    tidy = melt(data=tidy,id.vars=colnames(tidy[,1:3]),measure.vars=colnames(tidy[,4:ncol(tidy)]))
 ```
 
 And finally we write our newly made "tidy" data with:
