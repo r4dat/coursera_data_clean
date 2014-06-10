@@ -52,12 +52,23 @@ complete = complete[,
 #Skip first 2 columns of set because they're subject-id and activity.
 tidy = aggregate(x=complete[,3:88],by=complete[,c("sid","activity")],FUN=mean)
 
+## create column containing frequency count of SubjID & Act to help with further 
+## analysis.
+countframe = ddply(complete[,1:2],.(sid,activity),nrow)
+
+## Match count on sid and activity in tidy frame.
+countframe = join(x=tidy[,1:2],y=countframe,by=c("sid","activity"))
+
+## Bind new column into frame.
+tidy=cbind(tidy[,1:2],freq=countframe[,3],tidy[,3:88])
+
+#join on sid and activity
 # add meanby_sid_act prefix.
 colnames(tidy)=paste("meanby_subjact_",colnames(tidy),sep='')
 
 #Reset sid and activity names. Change sid to subjID
 # -- little more human readable and since we're done working with the data, why not?
-colnames(tidy)[1:2]=c("subjID","activity")
+colnames(tidy)[1:3]=c("subjID","activity","freq")
 
 #Write table.
 write.table(tidy,file="mean_by_subj_id_tidy_tableout.txt",quote=TRUE,col.names=TRUE,row.names=FALSE)
