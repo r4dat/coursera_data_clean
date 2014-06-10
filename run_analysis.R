@@ -1,4 +1,5 @@
 require(plyr)
+require(reshape2)
 source("get_data.R")
 # Set string Variables
 localdir=getwd()
