@@ -50,6 +50,11 @@ Additionally we read in two additional "helper" files. One allows us to look up 
     xLabel = read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
 ```
 
+Next we concatenate the **trn** and **tst** dataframes with the rbind function.
+```{r}
+    complete = rbind(trn,tst)
+```
+
 This is a good start, but if you were to hand the **complete** dataframe to someone, they'd have no idea what it means because none of the columns are labeled as anything other than V1, V2! The next bit does this.
 ```{r}
     colnames(complete) = c("sid","activity",xLabel[,2])
