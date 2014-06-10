@@ -118,7 +118,7 @@ But now we've changed the data without changing the variable names! So that's ou
 Which prepends "meanby_subjact" to all the column names... Including sid and activity. Whoops! This is fixed with
 ```{r}
     #Reset sid and activity names. Let's choose something more human-readable than sid too.
-    colnames(tidy)[1:2]=c("subjID","activity")
+    colnames(tidy)[1:2]=c("subjID","activity","freq")
 ```
 
 And finally we write our newly made "tidy" data with:
