@@ -70,5 +70,30 @@ Data Analysis Overview
 6. Return tidy data.
 
 
-Variable Code Book or Data Dictionary
+Code Book or Data Dictionary for tidy set
 =================
+##Subject
+*subjID* or *sid*
+Type: Numeric
+Range: Discrete, 1-30 inclusive.
+
+##Activity
+*activity*
+Type: Character
+Values:
+WALKING
+WALKIN_UPSTAIRS
+WALKING_DOWNSTAIRS
+SITTING
+STANDING
+LAYING
+
+##Frequency
+*freq*
+Type: Numeric
+Range: Discrete, 0-inf non-inclusive
+**Calculated field, counts number of observations in each Subject ID/Activity Combination. E.g. 1/Walking occurred 52 times.** 
+
+##Continuous Features
+*mean_'base_name'*
+Type: Numeric
