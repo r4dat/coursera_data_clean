@@ -50,6 +50,17 @@ Additionally we read in two additional "helper" files. One allows us to look up 
     xLabel = read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
 ```
 
+The features contain characters that may cause issues - commas and parentheses etc.
+We strip these by doing global substitution on the name vector with
+```{r}
+    ## Strip special characters from labels for cleanliness and so some functions don't choke.
+    xLabel[,2] = sapply(xLabel[,2], function(arg) 
+      { 
+      arg = gsub(arg, pattern='\\(|\\)', replacement='');
+      arg = gsub(arg, pattern='[[:punct:]]', replacement='.') 
+      } 
+    )
+
 Next we concatenate the **trn** and **tst** dataframes with the rbind function.
 ```{r}
     complete = rbind(trn,tst)
