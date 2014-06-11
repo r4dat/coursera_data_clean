@@ -20,6 +20,14 @@ tst=read_data("train")
 actLabel = read.table(file=paste(localdir,datadir,"activity_labels.txt",sep='/'),stringsAsFactors=FALSE)
 xLabel = read.table(file=paste(localdir,datadir,"features.txt",sep='/'),stringsAsFactors=FALSE)
 
+## Strip special characters from labels for cleanliness and so some functions don't choke.
+xLabel[,2] = sapply(xLabel[,2], function(arg) 
+  { 
+    arg = gsub(arg, pattern='\\(|\\)', replacement='');
+    arg = gsub(arg, pattern='[[:punct:]]', replacement='.') 
+  } 
+)
+
 # Concatenate training and test frames.
 complete=rbind(trn,tst)
 
