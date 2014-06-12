@@ -60,7 +60,7 @@ We strip these by doing global substitution on the name vector with
       arg = gsub(arg, pattern='[[:punct:]]', replacement='.') 
       } 
     )
-
+```
 Next we concatenate the **trn** and **tst** dataframes with the rbind function.
 ```{r}
     complete = rbind(trn,tst)
