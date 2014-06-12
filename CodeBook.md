@@ -93,7 +93,9 @@ LAYING
 Variable Name: *freq*  
 Type: Numeric  
 Range: Discrete, 0-inf non-inclusive [max in set 95]  
-**Calculated field, counts number of observations in each Subject ID/Activity Combination. E.g. 1/Walking occurred 52 times.** 
+Note: Frequency was included to aid in future analysis - e.g. weighting to create grand mean.
+**Calculated field, counts number of observations in each Subject ID/Activity Combination. E.g. 1/Walking occurred 52 times.**  
+
 
 ### Continuous Features
 Variable Name: *mean_'base_name'*  
