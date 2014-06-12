@@ -112,7 +112,7 @@ The first statement splits based on sid,activity combinations and counts the num
     countframe = ddply(complete[,1:2],.(sid,activity),nrow)
 ```
 
-Following we match based on sid and activity, sense ordering of the frames isn't assured, and finally add the new column to **tidy** with *cbind*.
+Following we match based on sid and activity, since ordering of the frames isn't assured, and finally add the new column to **tidy** with *cbind*.
 ```{r}
     ## Match count on sid and activity in tidy frame.
     countframe = join(x=tidy[,1:2],y=countframe,by=c("sid","activity"))
