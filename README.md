@@ -38,8 +38,8 @@ The first section sources the get_data script to download data if it doesn't alr
 Next we get our fully constructed dataframes with the *read_data* function. Their composition is outlined in the section on *get_data* but as a reminder they are of the form subjectID, Activity, GPS_Measures.
 
 ```{r}
-    trn=read_data("test")
-    tst=read_data("train")
+    trn = read_data("test")
+    tst = read_data("train")
 ```
 
 Additionally we read in two additional "helper" files. One allows us to look up activity labels. E.g. does the integer 1 mean Walking or Running? The second file contains a description of what each column in the x-sets mean. Because right now we just have numbers, and if you were to look at the dataframe they'd be labled V1, V2 etc.
@@ -118,18 +118,18 @@ Following we match based on sid and activity, sense ordering of the frames isn't
     countframe = join(x=tidy[,1:2],y=countframe,by=c("sid","activity"))
 
     ## Bind new column into frame.
-    tidy=cbind(tidy[,1:2],freq=countframe[,3],tidy[,3:88])
+    tidy = cbind(tidy[,1:2],freq=countframe[,3],tidy[,3:88])
 ```
 
 But now we've changed the data without changing the variable names! So that's our next step. Using the same *colnames* trick we used earlier, we're going to change the variable names.
 ```{r}
     # add meanby_sid_act prefix.
-    colnames(tidy)=paste("mean_",colnames(tidy),sep='')
+    colnames(tidy) = paste("mean_",colnames(tidy),sep='')
 ```
 Which prepends "meanby_subjact" to all the column names... Including sid and activity. Whoops! This is fixed with
 ```{r}
     #Reset sid and activity names. Let's choose something more human-readable than sid too.
-    colnames(tidy)[1:2]=c("subjID","activity","freq")
+    colnames(tidy)[1:2] = c("subjID","activity","freq")
 ```
 
 Create a "melted" row-oriented data-set. I've opted to include the subset frequency (variable 'freq') for each row because it may be necc. if various statistical calculations or weighting schemes are used based on the variable.
