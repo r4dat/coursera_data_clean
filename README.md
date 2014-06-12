@@ -2,7 +2,7 @@ Get_Data.R
 ===================
 *Download_Data* function: Set some base strings (datadir, working directory). If neither data files, nor expected dataframes exist in directory or environment respectively, download and unzip files.
 
-*Read_Data* function: Accept string argument named setstring, expected to be either "test" or "train". Then does some string manipulation to create the paths and load dataframes. After all sets are loaded (x,y,subject) the function rbinds them into a logical structure (subj,act,x) and returns the resultant dataframe.
+*Read_Data* function: Accept string argument named setstring, expected to be either "test" or "train". Then does some string manipulation to create the paths and load dataframes. After all sets are loaded (x,y,subject) the function binds them into a logical structure (subj,act,x) and returns the resultant dataframe.
 
 A more exhaustive overview of the read_data code follows:
 
@@ -13,8 +13,7 @@ Previously I've created two useful strings.
 ```
 The first setting the current working directory, the second setting the base data directory within the working directory.
 
-Next we start building path strings to make the actual read-in less painful than co
-mpletely literal path entry. If you are unfamiliar with the paste function, it concatenates strings.
+Next we start building path strings to make the actual read-in less painful than completely literal path entry. If you are unfamiliar with the paste function, it concatenates strings.
 ```{r}
     tpath =  paste(localdir,datadir,setstring,sep='/')
     xname =  paste("X_",setstring,suffix,sep='')
@@ -42,7 +41,7 @@ Next we get our fully constructed dataframes with the *read_data* function. Thei
     tst = read_data("train")
 ```
 
-Additionally we read in two additional "helper" files. One allows us to look up activity labels. E.g. does the integer 1 mean Walking or Running? The second file contains a description of what each column in the x-sets mean. Because right now we just have numbers, and if you were to look at the dataframe they'd be labled V1, V2 etc.
+Additionally we read in two additional "helper" files. One allows us to look up activity labels. E.g. does the integer 1 mean Walking or Running? The second file contains a description of what each column in the x-sets mean. Because right now we just have numbers, and if you were to look at the dataframe they'd be labeled V1, V2 etc.
 
 ```{r}
 ##### READ IN ACTIVITY LABELS, FEATURES (x col names)
@@ -87,7 +86,7 @@ But piece by piece: *join* is part of the 'plyr' package. It functions identical
 This join command creates a new dataframe with: sid,activity(integer),activity(string). So one line might be: '3 1 Walking'. the [,3] at the end of the join selects only this last column and assigns it to complete's activity column thus replacing 1 with Walking and so on. 
 
 But wait, all we want are variables dealing with mean and standard deviation (or 'std' as the data dictionary abbreviates it).
-Previously we've used integer based indexing, but we can also use column names.So how do we know which ones to pick? The *grep* funtion allows us to search for strings and return those containing pre-defined patterns which is done below. E.g. this *grep* searches for "sid" or "activity" or any strings containing mean or std anywhere in the word without regard to case. You'll note that we're turning *grep* loose on the full column names. So grep will return only those column names we search for, effectively recreating the **complete** dataframe with all rows, but only the columns grep found.
+Previously we've used integer based indexing, but we can also use column names.So how do we know which ones to pick? The *grep* function allows us to search for strings and return those containing pre-defined patterns which is done below. E.g. this *grep* searches for "sid" or "activity" or any strings containing mean or std anywhere in the word without regard to case. You'll note that we're turning *grep* loose on the full column names. So grep will return only those column names we search for, effectively recreating the **complete** dataframe with all rows, but only the columns grep found.
 ```{r}
     complete = complete[,
                     grep(pattern="sid|activity|*mean*|*std*",
@@ -134,7 +133,7 @@ Which prepends "mean_" to all the column names... Including sid and activity. Wh
 
 The goal with this pre-pending is so glancing at any of the variables allows the user/analyst to identify which dataset they're working with - the raw or tidy version.  
 
-Create a "melted" row-oriented data-set. I've opted to include the subset frequency (variable 'freq') for each row because it may be necc. if various statistical calculations or weighting schemes are used based on the variable.
+Create a "melted" row-oriented data-set. I've opted to include the subset frequency (variable 'freq') for each row because it may be necessary. if various statistical calculations or weighting schemes are used based on the variable.
 ```{r}
     tidy = melt(data=tidy,id.vars=colnames(tidy[,1:3]),measure.vars=colnames(tidy[,4:ncol(tidy)]))
 ```
