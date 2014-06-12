@@ -126,11 +126,13 @@ But now we've changed the data without changing the variable names! So that's ou
     # add meanby_sid_act prefix.
     colnames(tidy) = paste("mean_",colnames(tidy),sep='')
 ```
-Which prepends "meanby_subjact" to all the column names... Including sid and activity. Whoops! This is fixed with
+Which prepends "mean_" to all the column names... Including sid and activity. Whoops! This is fixed with
 ```{r}
     #Reset sid and activity names. Let's choose something more human-readable than sid too.
     colnames(tidy)[1:2] = c("subjID","activity","freq")
 ```
+
+The goal with this pre-pending is so glancing at any of the variables allows the user/analyst to identify which dataset they're working with - the raw or tidy version.  
 
 Create a "melted" row-oriented data-set. I've opted to include the subset frequency (variable 'freq') for each row because it may be necc. if various statistical calculations or weighting schemes are used based on the variable.
 ```{r}
