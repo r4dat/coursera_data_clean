@@ -99,7 +99,7 @@ Note: Frequency was included to aid in future analysis - e.g. weighting to creat
 
 ### Continuous Features
 Variable Name: *mean_'base_name'*  
-**Mean of variable by Subject/ID combination. E.g 1/Walking 'mean_tBodyAcc.mean.X' is the mean of the 52 observations from subject 1, activity walking of the variable 'tBodyAcc.mean.X'**  _This naming convention is followed to make abundantly clear this is a summarization, not the raw data itself._  
+**Mean of variable by Subject/ID combination. E.g 1/Walking 'mean_tBodyAcc.mean.X' is the mean of the 52 observations from subject 1, activity walking of the variable 'tBodyAcc.mean.X'**    **This naming convention is followed to make abundantly clear this is a summarization, not the raw data itself.**  
 Type: Numeric  
  1  mean_tBodyAcc.mean.X   
  2	mean_tBodyAcc.mean.Y   
